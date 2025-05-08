@@ -6,6 +6,7 @@ module.exports = {
   output: {
     path: path.resolve(__dirname, "dist"),
     filename: "bundle.js",
+    publicPath: "/", //라우팅을 위한 publicPath 설정
     clean: true, //dist 폴더 정리
   },
   resolve: {
