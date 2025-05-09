@@ -2,7 +2,7 @@ const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 module.exports = {
-  entry: "./src/index.jsx",
+  entry: "./src/index.tsx",
   output: {
     path: path.resolve(__dirname, "dist"),
     filename: "bundle.js",
@@ -10,14 +10,14 @@ module.exports = {
     clean: true, //dist 폴더 정리
   },
   resolve: {
-    extensions: [".js", ".jsx"], //확장자 생략 허용
+    extensions: [".js", ".ts", ".tsx"], //확장자 생략 허용
   },
   module: {
     rules: [
       {
-        test: /\.(js|jsx)$/,
+        test: /\.(ts|tsx)$/,
+        use: "ts-loader",
         exclude: /node_modules/,
-        use: "babel-loader",
       },
       {
         test: /\.css$/, //css 파일 처리
