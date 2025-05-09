@@ -1,5 +1,10 @@
+require("dotenv").config();
+
 const path = require("path");
+const webpack = require("webpack");
+
 const HtmlWebpackPlugin = require("html-webpack-plugin");
+const { components } = require("@storybook/core/components");
 
 module.exports = {
   entry: "./src/index.tsx",
@@ -11,6 +16,11 @@ module.exports = {
   },
   resolve: {
     extensions: [".js", ".ts", ".tsx"], //확장자 생략 허용
+    alias: {
+      components: path.resolve(__dirname, "src/components"),
+      pages: path.resolve(__dirname, "src/pages"),
+      lib: path.resolve(__dirname, "src/lib"),
+    },
   },
   module: {
     rules: [
@@ -27,7 +37,16 @@ module.exports = {
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: "./public/index.html", // 기본 HTML 템플릿
+      template: "./public/index.html",
+    }),
+    new webpack.DefinePlugin({
+      // 반드시 문자열로 치환되어야 함
+      "process.env.NEXT_PUBLIC_API_URL": JSON.stringify(
+        process.env.NEXT_PUBLIC_API_URL
+      ),
+      "process.env.NEXT_PUBLIC_TOUR_API_KEY": JSON.stringify(
+        process.env.NEXT_PUBLIC_TOUR_API_KEY
+      ),
     }),
   ],
   devServer: {
