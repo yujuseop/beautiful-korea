@@ -5,7 +5,7 @@ const API_URL = process.env.NEXT_PUBLIC_API_URL;
 const TOUR_API_KEY = process.env.NEXT_PUBLIC_TOUR_API_KEY;
 
 // 관광지 목록 조회
-export async function getTourSpots(page = 1) {
+export async function getTourSpots(page = 1, areaCode = "1") {
   try {
     const response = await axios.get(`${API_URL}/areaBasedList1`, {
       params: {
@@ -13,7 +13,7 @@ export async function getTourSpots(page = 1) {
         MobileOS: "ETC",
         MobileApp: "Beautiful-Korea",
         contentTypeId: "12",
-        areaCode: "1",
+        areaCode,
         numOfRows: 10,
         pageNo: page,
         _type: "json",
