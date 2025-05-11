@@ -1,16 +1,26 @@
 import React, { useEffect, useState } from "react";
 import { getTourDetail } from "../../lib/axios";
 
+interface SpotInfo {
+  title: string;
+  addr1: string;
+  overview: string;
+  imageUrl: string | null;
+}
+
 export default function TourImage({ contentId }: { contentId: string }) {
-  const [imageUrl, setImageUrl] = useState<string | null>(null);
-  const [title, setTitle] = useState<string>("");
+  const [spotInfo, setSpotInfo] = useState<SpotInfo | null>(null);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const spot = await getTourDetail(contentId);
-        setImageUrl(spot.firstimage || spot.firstimage2 || null);
-        setTitle(spot.title || "제목 없음");
+        setSpotInfo({
+          title: spot.title || "제목 없음",
+          addr1: spot.addr1 || "주소 없음",
+          overview: spot.overview || "설명 정보 없음",
+          imageUrl: spot.firstimage || spot.firstimage2 || null,
+        });
       } catch (err) {
         console.error("이미지 불러오기 실패:", err);
       }
@@ -21,16 +31,23 @@ export default function TourImage({ contentId }: { contentId: string }) {
     }
   }, [contentId]); // contentId가 바뀌면 다시 fetch
 
-  if (!imageUrl) return <p>이미지를 불러오는 중입니다...</p>;
+  if (!spotInfo) return <p>정보를 불러오는 중입니다...</p>;
 
   return (
     <div>
-      <h2>{title}</h2>
-      <img
-        src={imageUrl}
-        alt={title}
-        style={{ width: "100%", height: "auto", borderRadius: "8px" }}
-      />
+      <h2>{spotInfo.title}</h2>
+      {spotInfo.imageUrl && (
+        <img
+          src={spotInfo.imageUrl}
+          alt={spotInfo.title}
+          className="w-full h-auto rounded-lg mb-4"
+        />
+      )}
+      <h2 className="text-2xl font-bold text-gray-800">{spotInfo.title}</h2>
+      <p className="text-gray-500 mt-1">{spotInfo.addr1}</p>
+      <p className="text-gray-700 mt-4 leading-relaxed whitespace-pre-wrap">
+        {spotInfo.overview}
+      </p>
     </div>
   );
 }

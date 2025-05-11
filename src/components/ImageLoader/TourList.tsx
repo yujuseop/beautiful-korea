@@ -30,7 +30,7 @@ export default function TourList({
   }, [page, area]);
 
   return (
-    <div>
+    <div className="">
       <h2>관광지 목록</h2>
       <select
         value={area}
@@ -49,9 +49,9 @@ export default function TourList({
       <ul>
         {spots.map((spot) => (
           <li key={spot.contentid}>
-            <button onClick={() => onSelect(spot.contentid)}>
+            <Button onClick={() => onSelect(spot.contentid)}>
               {spot.title}
-            </button>
+            </Button>
           </li>
         ))}
       </ul>
