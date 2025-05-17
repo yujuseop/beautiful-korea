@@ -43,9 +43,9 @@ export default function TourImage({ contentId }: { contentId: string }) {
           className="w-full h-auto rounded-lg mb-4"
         />
       )}
-      <h2 className="text-2xl font-bold text-gray-800">{spotInfo.title}</h2>
-      <p className="text-gray-500 mt-1">{spotInfo.addr1}</p>
-      <p className="text-gray-700 mt-4 leading-relaxed whitespace-pre-wrap">
+      <h2 className="text-2xl font-bold text-gray-600">{spotInfo.title}</h2>
+      <p className="text-gray-800 mt-1">{spotInfo.addr1}</p>
+      <p className="text-gray-800 mt-4 leading-relaxed whitespace-pre-wrap">
         {spotInfo.overview}
       </p>
     </div>
