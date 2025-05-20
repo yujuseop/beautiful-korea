@@ -22,7 +22,7 @@ export default function TourImage({ contentId }: { contentId: string }) {
           imageUrl: spot.firstimage || spot.firstimage2 || null,
         });
       } catch (err) {
-        console.error("이미지 불러오기 실패:", err);
+        console.error("정보 불러오기 실패:", err);
       }
     };
 

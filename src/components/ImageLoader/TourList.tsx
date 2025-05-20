@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { getTourSpots } from "../../lib/axios";
 import Button from "components/Function/Button";
-import { AREA_CODES } from "components/areaCodes";
+import { AREA_CODES } from "lib/areaCodes";
 
 type Spot = {
   contentid: string;
