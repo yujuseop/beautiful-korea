@@ -7,7 +7,7 @@ export default function TourPage() {
 
   return (
     <div>
-      <h1>한국 관광지 보기</h1>
+      <h1>관광지 보기</h1>
       <TourList onSelect={setSelectedId} />
       {selectedId && <TourImage contentId={selectedId} />}
     </div>
