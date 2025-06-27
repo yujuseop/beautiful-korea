@@ -31,7 +31,7 @@ export default function TourImage({ contentId }: { contentId: string }) {
     }
   }, [contentId]); // contentId가 바뀌면 다시 fetch
 
-  if (!spotInfo) return <p>정보를 불러오는 중입니다...</p>;
+  if (!spotInfo) return <p>정보를 받아오고 있습니다..</p>;
 
   return (
     <div>
