@@ -29,25 +29,37 @@ export default function TourImage({ contentId }: { contentId: string }) {
     if (contentId) {
       fetchData();
     }
-  }, [contentId]); // contentId가 바뀌면 다시 fetch
+  }, [contentId]);
 
-  if (!spotInfo) return <p>정보를 받아오고 있습니다..</p>;
+  if (!spotInfo)
+    return (
+      <div className="w-full flex justify-center items-center p-8">
+        <p className="text-gray-600">정보를 받아오고 있습니다...</p>
+      </div>
+    );
 
   return (
-    <div>
-      <h2>{spotInfo.title}</h2>
+    <div className="bg-white rounded-lg shadow-lg overflow-hidden">
       {spotInfo.imageUrl && (
-        <img
-          src={spotInfo.imageUrl}
-          alt={spotInfo.title}
-          className="w-full h-auto rounded-lg mb-4"
-        />
+        <div className="w-full h-[400px] overflow-hidden">
+          <img
+            src={spotInfo.imageUrl}
+            alt={spotInfo.title}
+            className="w-full h-full object-cover"
+          />
+        </div>
       )}
-      <h2 className="text-2xl font-bold text-gray-600">{spotInfo.title}</h2>
-      <p className="text-gray-800 mt-1">{spotInfo.addr1}</p>
-      <p className="text-gray-800 mt-4 leading-relaxed whitespace-pre-wrap">
-        {spotInfo.overview}
-      </p>
+      <div className="p-6">
+        <h2 className="text-2xl font-bold text-gray-800 mb-2">
+          {spotInfo.title}
+        </h2>
+        <p className="text-gray-600 mb-4">{spotInfo.addr1}</p>
+        <div className="prose max-w-none">
+          <p className="text-gray-700 leading-relaxed whitespace-pre-wrap">
+            {spotInfo.overview}
+          </p>
+        </div>
+      </div>
     </div>
   );
 }

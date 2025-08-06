@@ -29,16 +29,28 @@ export default function TourList({
     fetchSpots();
   }, [page, area]);
 
+  const handleReset = () => {
+    setPage(1);
+    setArea("1");
+    onSelect("");
+  };
+
   return (
-    <div className="">
-      <h2>관광지 목록</h2>
+    <div className="w-full">
+      <h2
+        className="text-xl font-bold mb-4 cursor-pointer hover:text-blue-600"
+        onClick={handleReset}
+        title="초기화"
+      >
+        관광지 목록
+      </h2>
       <select
         value={area}
         onChange={(e) => {
           setArea(e.target.value);
           setPage(1);
         }}
-        className="bodrder px-2 py-1 mb-4"
+        className="border rounded px-4 py-2 mb-4"
       >
         {Object.entries(AREA_CODES).map(([name, code]) => (
           <option key={code} value={code}>
@@ -46,9 +58,9 @@ export default function TourList({
           </option>
         ))}
       </select>
-      <ul>
+      <ul className="flex flex-wrap gap-2">
         {spots.map((spot) => (
-          <li key={spot.contentid}>
+          <li key={spot.contentid} className="flex-none">
             <Button onClick={() => onSelect(spot.contentid)}>
               {spot.title}
             </Button>

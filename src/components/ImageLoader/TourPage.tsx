@@ -6,10 +6,13 @@ export default function TourPage() {
   const [selectedId, setSelectedId] = useState<string>("");
 
   return (
-    <div>
-      <h1>관광지 보기</h1>
+    <div className="flex flex-col gap-8 w-full max-w-6xl mx-auto p-4">
       <TourList onSelect={setSelectedId} />
-      {selectedId && <TourImage contentId={selectedId} />}
+      {selectedId && (
+        <div className="w-full">
+          <TourImage contentId={selectedId} />
+        </div>
+      )}
     </div>
   );
 }
