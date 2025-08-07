@@ -1,43 +1,11 @@
-import React, { useEffect, useState } from "react";
-import { getTourDetail } from "../../lib/axios";
+import React from "react";
+import { SpotDetail } from "../../hooks/useTourSpots";
 
-interface SpotInfo {
-  title: string;
-  addr1: string;
-  overview: string;
-  imageUrl: string | null;
-}
-
-export default function TourImage({ contentId }: { contentId: string }) {
-  const [spotInfo, setSpotInfo] = useState<SpotInfo | null>(null);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const spot = await getTourDetail(contentId);
-        setSpotInfo({
-          title: spot.title || "제목 없음",
-          addr1: spot.addr1 || "주소 없음",
-          overview: spot.overview || "설명 정보 없음",
-          imageUrl: spot.firstimage || spot.firstimage2 || null,
-        });
-      } catch (err) {
-        console.error("장소 정보 불러오기 실패:", err);
-      }
-    };
-
-    if (contentId) {
-      fetchData();
-    }
-  }, [contentId]);
-
-  if (!spotInfo)
-    return (
-      <div className="w-full flex justify-center items-center p-8">
-        <p className="text-gray-600">정보를 받아오고 있습니다...</p>
-      </div>
-    );
-
+const TourImage = React.memo(function TourImage({
+  spotInfo,
+}: {
+  spotInfo: SpotDetail;
+}) {
   return (
     <div className="bg-white rounded-lg shadow-lg overflow-hidden">
       {spotInfo.imageUrl && (
@@ -46,6 +14,7 @@ export default function TourImage({ contentId }: { contentId: string }) {
             src={spotInfo.imageUrl}
             alt={spotInfo.title}
             className="w-full h-full object-cover"
+            loading="lazy"
           />
         </div>
       )}
@@ -62,4 +31,6 @@ export default function TourImage({ contentId }: { contentId: string }) {
       </div>
     </div>
   );
-}
+});
+
+export default TourImage;
