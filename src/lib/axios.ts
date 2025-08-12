@@ -1,4 +1,3 @@
-// 기존 axios 설정 및 getTourDetail 포함
 import axios from "axios";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
@@ -13,7 +12,7 @@ export async function getTourSpots(page = 1, areaCode = "1") {
 
     const response = await axios.get(`${API_URL}/areaBasedList2`, {
       params: {
-        serviceKey: TOUR_API_KEY, // 디코딩된 키 사용
+        serviceKey: TOUR_API_KEY,
         MobileOS: "ETC",
         MobileApp: "Beautiful-Korea",
         contentTypeId: "12",

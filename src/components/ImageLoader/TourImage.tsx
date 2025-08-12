@@ -1,64 +1,56 @@
-import React, { useEffect, useState } from "react";
-import { getTourDetail } from "../../lib/axios";
-
-interface SpotInfo {
-  title: string;
-  addr1: string;
-  overview: string;
-  imageUrl: string | null;
-}
+import React from "react";
+import { useTourDetail } from "../../hooks/useTourDetail";
 
 export default function TourImage({ contentId }: { contentId: string }) {
-  const [spotInfo, setSpotInfo] = useState<SpotInfo | null>(null);
+  const { detail, loading, error } = useTourDetail(contentId);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const spot = await getTourDetail(contentId);
-        setSpotInfo({
-          title: spot.title || "제목 없음",
-          addr1: spot.addr1 || "주소 없음",
-          overview: spot.overview || "설명 정보 없음",
-          imageUrl: spot.firstimage || spot.firstimage2 || null,
-        });
-      } catch (err) {
-        console.error("장소 정보 불러오기 실패:", err);
-      }
-    };
-
-    if (contentId) {
-      fetchData();
-    }
-  }, [contentId]);
-
-  if (!spotInfo)
+  if (loading) {
     return (
       <div className="w-full flex justify-center items-center p-8">
         <p className="text-gray-600">정보를 받아오고 있습니다...</p>
       </div>
     );
+  }
+
+  if (error) {
+    return (
+      <div className="w-full flex justify-center items-center p-8">
+        <p className="text-red-600">{error}</p>
+      </div>
+    );
+  }
+
+  if (!detail) {
+    return (
+      <div className="w-full flex justify-center items-center p-8">
+        <p className="text-gray-600">관광지 정보가 없습니다.</p>
+      </div>
+    );
+  }
 
   return (
     <div className="bg-white rounded-lg shadow-lg overflow-hidden">
-      {spotInfo.imageUrl && (
+      {(detail.firstimage || detail.firstimage2) && (
         <div className="w-full h-[400px] overflow-hidden">
           <img
-            src={spotInfo.imageUrl}
-            alt={spotInfo.title}
+            src={detail.firstimage || detail.firstimage2}
+            alt={detail.title}
             className="w-full h-full object-cover"
           />
         </div>
       )}
       <div className="p-6">
         <h2 className="text-2xl font-bold text-gray-800 mb-2">
-          {spotInfo.title}
+          {detail.title}
         </h2>
-        <p className="text-gray-600 mb-4">{spotInfo.addr1}</p>
-        <div className="prose max-w-none">
-          <p className="text-gray-700 leading-relaxed whitespace-pre-wrap">
-            {spotInfo.overview}
-          </p>
-        </div>
+        <p className="text-gray-600 mb-4">{detail.addr1}</p>
+        {detail.overview && (
+          <div className="prose max-w-none">
+            <p className="text-gray-700 leading-relaxed whitespace-pre-wrap">
+              {detail.overview}
+            </p>
+          </div>
+        )}
       </div>
     </div>
   );

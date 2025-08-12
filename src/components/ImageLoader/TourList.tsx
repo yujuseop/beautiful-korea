@@ -1,39 +1,40 @@
-import React, { useEffect, useState } from "react";
-import { getTourSpots } from "../../lib/axios";
+import React, { useState } from "react";
 import Button from "components/Function/Button";
 import { AREA_CODES } from "lib/areaCodes";
-
-type Spot = {
-  contentid: string;
-  title: string;
-};
+import { useTourSpots } from "../../hooks/useTourSpots";
 
 export default function TourList({
   onSelect,
 }: {
   onSelect: (id: string) => void;
 }) {
-  const [spots, setSpots] = useState<Spot[]>([]);
   const [page, setPage] = useState(1);
   const [area, setArea] = useState("1");
 
-  useEffect(() => {
-    const fetchSpots = async () => {
-      try {
-        const data = await getTourSpots(page, area);
-        setSpots(data);
-      } catch (err) {
-        console.error("관광지 목록 로딩 실패:", err);
-      }
-    };
-    fetchSpots();
-  }, [page, area]);
+  const { spots, loading, error } = useTourSpots({ page, area });
 
   const handleReset = () => {
     setPage(1);
     setArea("1");
     onSelect("");
   };
+
+  if (loading) {
+    return (
+      <div className="w-full">
+        <p className="text-gray-600">관광지 목록을 불러오는 중...</p>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="w-full">
+        <p className="text-red-600">{error}</p>
+        <Button onClick={handleReset}>다시 시도</Button>
+      </div>
+    );
+  }
 
   return (
     <div className="w-full">
