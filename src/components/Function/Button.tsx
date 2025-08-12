@@ -1,4 +1,4 @@
-import React, { memo } from "react";
+import React from "react";
 
 interface ButtonProps {
   children: React.ReactNode;
@@ -8,7 +8,7 @@ interface ButtonProps {
   disabled?: boolean;
 }
 
-const Button = memo(function Button({
+export default function Button({
   children,
   onClick,
   className = "",
@@ -25,6 +25,4 @@ const Button = memo(function Button({
       {children}
     </button>
   );
-});
-
-export default Button;
+}
