@@ -1,8 +1,26 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback, memo } from "react";
 import { useRegionHighlights } from "../hooks/useRegionHighlights";
 import { AREA_CODES } from "../lib/areaCodes";
 
-export default function RegionSlider() {
+const LoadingState = memo(() => (
+  <div className="w-full h-[500px] bg-gray-100 flex items-center justify-center">
+    <p className="text-gray-600">지역별 명소를 불러오는 중...</p>
+  </div>
+));
+
+const ErrorState = memo(({ message }: { message: string }) => (
+  <div className="w-full h-[500px] bg-gray-100 flex items-center justify-center">
+    <p className="text-red-600">{message}</p>
+  </div>
+));
+
+const EmptyState = memo(() => (
+  <div className="w-full h-[500px] bg-gray-100 flex items-center justify-center">
+    <p className="text-gray-600">표시할 지역 정보가 없습니다.</p>
+  </div>
+));
+
+export const RegionSlider = memo(() => {
   const { highlights, loading, error } = useRegionHighlights();
   const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -17,37 +35,17 @@ export default function RegionSlider() {
     return () => clearInterval(interval);
   }, [highlights.length]);
 
-  const goToPrevious = () => {
+  const goToPrevious = useCallback(() => {
     setCurrentIndex((prev) => (prev === 0 ? highlights.length - 1 : prev - 1));
-  };
+  }, [highlights.length]);
 
-  const goToNext = () => {
+  const goToNext = useCallback(() => {
     setCurrentIndex((prev) => (prev + 1) % highlights.length);
-  };
+  }, [highlights.length]);
 
-  if (loading) {
-    return (
-      <div className="w-full h-[500px] bg-gray-100 flex items-center justify-center">
-        <p className="text-gray-600">지역별 명소를 불러오는 중...</p>
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="w-full h-[500px] bg-gray-100 flex items-center justify-center">
-        <p className="text-red-600">{error}</p>
-      </div>
-    );
-  }
-
-  if (highlights.length === 0) {
-    return (
-      <div className="w-full h-[500px] bg-gray-100 flex items-center justify-center">
-        <p className="text-gray-600">표시할 지역 정보가 없습니다.</p>
-      </div>
-    );
-  }
+  if (loading) return <LoadingState />;
+  if (error) return <ErrorState message={error} />;
+  if (highlights.length === 0) return <EmptyState />;
 
   const currentSpot = highlights[currentIndex];
   const regionName =
@@ -131,4 +129,6 @@ export default function RegionSlider() {
       </div>
     </div>
   );
-}
+});
+
+export default RegionSlider;

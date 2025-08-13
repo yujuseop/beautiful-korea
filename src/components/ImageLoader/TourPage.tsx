@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import TourList from "./TourList";
-import TourImage from "./TourImage";
+import { TourList } from "./TourList";
+import { TourImage } from "./TourImage";
 
 export default function TourPage() {
   const [selectedId, setSelectedId] = useState<string>("");
