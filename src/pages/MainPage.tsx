@@ -1,7 +1,14 @@
-import React from "react";
+import React, { Suspense, lazy } from "react";
 import Layout from "components/Layout";
-import { RegionSlider } from "../components/RegionSlider";
 import { useNavigate } from "react-router-dom";
+
+const RegionSlider = lazy(() => import("../components/RegionSlider"));
+
+const SliderLoadingFallback = () => (
+  <div className="w-full h-[500px] bg-gray-100 flex items-center justify-center">
+    <p className="text-gray-600">슬라이더를 불러오는 중...</p>
+  </div>
+);
 
 export default function MainPage() {
   const navigate = useNavigate();
@@ -11,7 +18,9 @@ export default function MainPage() {
       <main>
         {/* 지역별 하이라이트 슬라이더 */}
         <section>
-          <RegionSlider />
+          <Suspense fallback={<SliderLoadingFallback />}>
+            <RegionSlider />
+          </Suspense>
         </section>
 
         {/* 관광지 목록 바로가기 섹션 */}
